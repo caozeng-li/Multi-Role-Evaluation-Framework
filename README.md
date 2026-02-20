@@ -1,7 +1,4 @@
-# Multi-Role Evaluation System
-
-A **FastAPI-based multi-agent system** for evaluating space science research topics.
-The system employs **five categories of expert agents** to provide comprehensive evaluations, including **dimension-based scoring** and **academic literature background information**.
+# Multi-Agent Evaluation System
 
 ---
 
@@ -20,8 +17,8 @@ space-bio-agent/
 ├── llm_client.py            # LLM API client
 ├── literature_search.py     # Academic literature background module
 ├── multi_agent_system.py    # Multi-agent coordination system
-├── web_service.py           # FastAPI web service
-└── requirements.txt         # Dependencies
+├── web_service.py
+└── requirements.txt
 ```
 
 ---
@@ -40,12 +37,12 @@ Edit `config.py` to configure the system:
 
 ```python
 # LLM API configuration
-API_URL = "https://api.openai.com/v1/chat/completions"
-LLM_MODEL_NAME = "gpt-4o-mini"
+API_URL = ""
+LLM_MODEL_NAME = ""
 OPENAI_API_KEY = "your_openai_api_key"
 
 # CORE academic literature API (optional)
-CORE_API_KEY = "your_core_api_key"  # Obtain from https://core.ac.uk/services/api
+CORE_API_KEY = "your_core_api_key" 
 CORE_API_BASE_URL = "https://api.core.ac.uk/v3"
 
 # Literature background feature toggle
@@ -150,7 +147,7 @@ Evaluate a space science research topic using five categories of expert agents.
 
 ## Features
 
-### 1. Five Categories of Expert Agents
+### 1. Five Categories of Experts
 
 | Role                        | Evaluation Dimensions                                                                                |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -164,7 +161,7 @@ Evaluate a space science research topic using five categories of expert agents.
 
 ### 2. Dimension-Based Scoring
 
-Each agent assigns **scores (1–10)** to each evaluation dimension and provides an **overall score**.
+Each role assigns **scores (1–10)** to each evaluation dimension and provides an **overall score**.
 
 ---
 
@@ -210,9 +207,13 @@ curl -X POST "http://localhost:8000/evaluate" \
 
 ---
 
+## Weights
+
+To reduce token usage in the online service, **one agent per role** is used, and the final score is obtained via a **weighted aggregation**.
+The *“review panel”* strategy described in the paper is applied on **high-compute machines**.
+
 ### Weighted Total Score Calculation
 
-| Agent                   | Weight |
 | ----------------------- | ------ |
 | Sociologist             | 0.41   |
 | Researcher              | 0.37   |
